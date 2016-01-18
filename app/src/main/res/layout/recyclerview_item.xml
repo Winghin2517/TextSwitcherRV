@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="TextSwitch"
+        android:background="@color/colorAccent"
+        android:id="@+id/button" />
+
+    <TextSwitcher
+        android:id="@+id/count"
+        android:layout_toRightOf="@+id/button"
+        android:padding="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:inAnimation="@anim/slide_in_likes_counter"
+        android:outAnimation="@anim/slide_out_likes_counter">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:padding="8dp"
+            android:background="#CCCCCC"
+            android:text="0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:padding="8dp"
+            android:background="#CCCCCC"/>
+
+    </TextSwitcher>
+
+</RelativeLayout>

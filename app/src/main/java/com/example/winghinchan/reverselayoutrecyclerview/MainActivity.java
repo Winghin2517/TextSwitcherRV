@@ -13,21 +13,22 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     LinearLayoutManager llm;
     MyAdapter mAdapter;
-    ArrayList<String> myDataset = new ArrayList<>();
+    ArrayList<Count> myDataset = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //initializing dataset to 3 items
-        for (int i = 0; i < 3; i++) {
-            myDataset.add("Item " + i);
+        for (int i = 0; i < 15; i++) {
+            Count count = new Count();
+            count.setCounter("Item " + i);
+            count.setClicked(false);
+            myDataset.add(count);
         }
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         llm = new LinearLayoutManager(this);
-        llm.setReverseLayout(true);
-        llm.setStackFromEnd(true);
         recyclerView.setLayoutManager(llm);
         mAdapter = new MyAdapter(myDataset, recyclerView);
         recyclerView.setAdapter(mAdapter);
@@ -46,10 +47,13 @@ public class MainActivity extends AppCompatActivity {
                         myDataset.remove(myDataset.size() - 1);
                         mAdapter.notifyItemRemoved(myDataset.size());
                         //add items one by one
-/*                        for (int i = 0; i < 15; i++) {
-                            myDataset.add("Item" + (myDataset.size() + 1));
+                        for (int i = 0; i < 15; i++) {
+                            Count count = new Count();
+                            count.setCounter("Item" + (myDataset.size() + 1));
+                            count.setClicked(false);
+                            myDataset.add(count);
                             mAdapter.notifyItemInserted(myDataset.size());
-                        }*/
+                        }
                         mAdapter.setLoaded();
                         //or you can add all at once but do not forget to call mAdapter.notifyDataSetChanged();
                     }

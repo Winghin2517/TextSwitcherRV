@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
     private final int VIEW_ITEM = 1;
     private final int VIEW_PROG = 0;
 
-    private ArrayList<String>  mDataset;
+    private ArrayList<Count>  mDataset;
 
     // The minimum amount of items to have below your current scroll position before loading more.
     private int visibleThreshold = 2;
@@ -25,7 +26,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
     private boolean loading;
     private OnLoadMoreListener onLoadMoreListener;
 
-    public MyAdapter(ArrayList<String> myDataSet, RecyclerView recyclerView) {
+    public MyAdapter(ArrayList<Count> myDataSet, RecyclerView recyclerView) {
         mDataset = myDataSet;
 
         if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
@@ -61,7 +62,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
         RecyclerView.ViewHolder vh;
         if (viewType == VIEW_ITEM) {
             View v = LayoutInflater.from(parent.getContext())
-                    .inflate(android.R.layout.simple_list_item_1, parent, false);
+                    .inflate(R.layout.recyclerview_item, parent, false);
 
             vh = new TextViewHolder(v);
         } else {
@@ -74,9 +75,30 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof TextViewHolder) {
-            ((TextViewHolder) holder).mTextView.setText(mDataset.get(position).toString());
+            if (mDataset.get(position).isClicked()) {
+                ((TextViewHolder) holder).textSwitcher.setText("I was clicked!");
+            } else {
+                ((TextViewHolder) holder).textSwitcher.setText(mDataset.get(position).getCounter());
+            }
+            ((TextViewHolder) holder).switcher.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mDataset.get(position).isClicked()) {
+                        mDataset.get(position).setClicked(false);
+                        ((TextViewHolder) holder).textSwitcher.setText("I was clicked!");
+                        notifyItemChanged(position);
+                    } else {
+                        mDataset.get(position).setClicked(true);
+                        ((TextViewHolder) holder).textSwitcher.setText(mDataset.get(position).getCounter());
+                        notifyItemChanged(position);
+                    }
+
+
+                }
+            });
+
         } else {
             ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
         }
@@ -100,11 +122,13 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
     }
 
     public static class TextViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTextView;
+        public TextSwitcher textSwitcher;
+        public TextView switcher;
 
         public TextViewHolder(View v) {
             super(v);
-            mTextView = (TextView) v.findViewById(android.R.id.text1);
+            switcher = (TextView) v.findViewById(R.id.button);
+            textSwitcher = (TextSwitcher) v.findViewById(R.id.count);
         }
     }
 
